@@ -1,0 +1,8 @@
+Cài đặt nodejs   v18.18.2
+
+
+Tải phần mềm expo go trong chplay
+
+học reactnative : hook, component, style
+
+đọc mongodb, dữ liệu dạng json

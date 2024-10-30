@@ -1,0 +1,125 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+    background-color: rgb(255, 204, 223);
+    display: flex;
+    flex-direction: column;
+    /* Changed to column for better mobile responsiveness */
+    height: 100vh;
+    /* Ensure it fills the viewport height */
+    width: 100vw;
+}
+
+.show-on,
+.controll {
+    display: flex;
+    flex: 1;
+    min-height: 50px;
+    /* Ensure a minimum height for better usability */
+}
+
+.show-on {
+    background-color: lightpink;
+}
+
+.controll {
+    background-color: aqua;
+    /* Added a background color for visibility */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive styles */
+@media (min-width: 600px) {
+    body {
+        flex-direction: row;
+        /* Switch to row layout on larger screens */
+    }
+
+    .show-on,
+    .controll {
+        min-height: auto;
+        /* Remove min-height on larger screens */
+    }
+}
+
+.group-btn {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+button {
+    display: flex;
+    width: 40vw;
+    height: 15vh;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 20px;
+    background-color: lightpink;
+    ;
+    color: white;
+}
+
+button:hover {
+    background-color: #64afff;
+    border: 2px solid lightpink;
+    width: 45vw;
+    height: 20vh;
+}
+
+.group-mess {
+    overflow-y: auto;
+    width: 100%;
+}
+
+.p-receive {
+    background-color: aqua;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 20px;
+    width: max-content;
+    max-width: 40vh;
+    overflow-wrap: break-word; /* Tự động xuống dòng */
+    word-wrap: break-word; /* Hỗ trợ cho các trình duyệt cũ */
+    white-space: pre-wrap; /* Bảo toàn khoảng trắng và xuống dòng */
+}
+
+.p-send {
+    padding: 10px;
+    margin: 10px;
+    border: 2px solid #000000;
+    border-radius: 20px;
+    width: max-content;
+    max-width: 40vh;
+    overflow-wrap: break-word; /* Tự động xuống dòng */
+    word-wrap: break-word; /* Hỗ trợ cho các trình duyệt cũ */
+    white-space: pre-wrap; /* Bảo toàn khoảng trắng và xuống dòng */
+
+}
+
+.send-mess {
+    display: flex;
+    height: 5vh;
+    margin: 20px;;
+}
+
+.send-mess .input-mess {
+    height: 5vh;
+    width: 50vw;
+    border-radius: 10px;
+}
+
+.send-mess .send-btn {
+    height: 5vh;
+    width: 20vw;
+    border-radius: 10px;
+}

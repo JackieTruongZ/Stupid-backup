@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    #image-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    #image-container1 {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    #image {
+      width: 500px;
+      height: 500px;
+    }
+
+    body {
+      height: 2000px;
+      /* Add a long body to demonstrate scrolling */
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="image-container">
+    <img id="image" src="./asset/side-img.png" alt="Image">
+  </div>
+  <div id="image-container1">
+    <img id="image" src="./asset/side-img.png" alt="Image">
+  </div>
+  <script>
+    window.addEventListener('scroll', function () {
+      const imageContainer = document.getElementById('image-container');
+      const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+      imageContainer.style.top = `50%`;
+      imageContainer.style.left = `${50 + scrollY * 0.1}%`;
+
+      const imageContainer1 = document.getElementById('image-container1');
+      const scrollY1 = window.pageYOffset || document.documentElement.scrollTop;
+      imageContainer1.style.top = `50%`;
+      imageContainer1.style.left = `${50 - scrollY1 * 0.1}%`;
+
+    });
+  </script>
+</body>
+
+</html>

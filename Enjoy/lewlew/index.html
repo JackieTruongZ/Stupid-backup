@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Love UUU</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+    <img class="bg" src="./bg.jpg" alt="bg">
+
+    <div class="dialog-box" id="dialog-box">
+        <div class="dialog-title" id="dialog-title">Tiêu đề</div>
+        <div class="dialog-content" id="dialog-content">Nội dung</div>
+        <div class="dialog-buttons">
+            <button id="prev-btn" style="display: none;">Trước</button>
+            <button id="next-btn">Tiếp</button>
+            <button id="end-btn" style="display: none;">Trả lời</button>
+        </div>
+    </div>
+
+    <div class="dialog-ques" id="dialog-ques">
+        <div class="ques">
+            <p> Cho phép anh được làm người yêu me nhéeeeeeeeeeee <3 </p>
+        </div>
+        <div class="answer" id="answer">
+            <button id="yes-btn">Dạ có ạ</button>
+            <button id="no-btn">Đéo nha</button>
+        </div>
+    </div>
+
+    <div class="dialog-end" id="dialog-end">
+        <p>Dạaaaaaaaaaaaa cuối cùng em bé cũm đồng ý rồiiiiiiiiiiiiiiiii
+            Anh iuuuuu emmmm béeeeeeeeeeee
+        </p>
+    </div>
+
+
+    <script>
+        const dialogBox = document.getElementById('dialog-box');
+        const dialogTitle = document.getElementById('dialog-title');
+        const dialogContent = document.getElementById('dialog-content');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const endBtn = document.getElementById('end-btn');
+        const dialogQues = document.getElementById('dialog-ques');
+        const yesButton = document.getElementById('yes-btn');
+        const noButton = document.getElementById("no-btn");
+        const dialogEnd = document.getElementById('dialog-end')
+        let count = 10;
+        const dialogData = [
+            {
+                title: 'Mở đầu',
+                content: 'Hiluuu xin chào công chúa của tao <3, tao biết là tao hơi nhạt và ít khi làm công chúa vui nhưng deo thử thì t sẽ hối hận vì tao ... công chúa, muốn biết thì bấm tiếp đê lè lè'
+            },
+            {
+                title: 'Đôi điều về tao',
+                content: 'Tao là một người bình thường như bao thg con trai khác, tao không nhận tao tốt nhưng tao sẽ dùng tất cả tình cảm để trao cho ng tao yêu, đôi lúc còn nhạt với xamlol nữa dcm thôi tiếp đi '
+            },
+            {
+                title: 'Tao trc đó',
+                content: 'Ban đầu t cũng đang trong tình trạng rất chi là stress, cộng với vẫn còn deo tinh vào tình cảm nên t sa đọa vcl ăn r thẩm du ngày 3 4 lần, điên mẹ luôn huhu tao cũng deo bt tự nhiên sa đọa v :(( , thôi tiếp đi nói chung lúc đấy t tiêu cực j cũng làm kể cả rạch tay -> '
+            },
+            {
+                title: 'Tao khi gặp em, người tôi thương',
+                content: 'Nói chung là lúc bắt đầu gặp em thì đm cho tao xin lỗi là lúc đấy tao đang sa đọa vc nên mới add em nhưng mà deo hiểu sao, t nhìn em t lại thấy thương em lại thấy trong đôi mắt em có nỗi buồn gì đấy tiếp đi hơi dài đó'
+            },
+            {
+                title: ' Vẫn đang kể tao khi gặp em ',
+                content: ' Xong rồi càng nhắn t càng thấy mình tồi tệ cỡ nào, t cảm thấy những ngày tháng qua t sống như một thg biến thái deo ra gì, tao nhận ra lúc đấy tao thương em mất r dmm huhu , như là em là thiên thần lôi t từ vũng bùn lên '
+            },
+            {
+                title: 'Tao thương em',
+                content: 'Tao cảm thấy mình càng ngày càng yêu em nhiều hơn và dm tao nhận ra tao deo thể thiếu em cho nên là TAOOO MUỐNNNNNNN NÓI RẰNG TAOO YÊUUUU EMMMMM , cho nên tao muốn hỏi em có đồng ý làm người yêu anh không ạ ? bấm trả lời để trả lời ạ '
+            }
+        ];
+
+        let currentIndex = 0;
+
+        function updateDialog() {
+            dialogTitle.textContent = dialogData[currentIndex].title;
+            dialogContent.textContent = dialogData[currentIndex].content;
+
+            prevBtn.style.display = currentIndex > 0 ? 'inline' : 'none';
+            nextBtn.style.display = currentIndex < dialogData.length - 1 ? 'inline' : 'none';
+            endBtn.style.display = currentIndex === dialogData.length - 1 ? 'inline' : 'none';
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentIndex--;
+            updateDialog();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentIndex++;
+            updateDialog();
+        });
+
+        endBtn.addEventListener('click', () => {
+            dialogBox.style.display = 'none';
+            dialogQues.style.display = 'block';
+        });
+
+        noButton.addEventListener('click', () => {
+            count = count - 1;
+            noButton.style.opacity = count / 10;
+            noButton.style.height = `${30 + count * 5}px`;
+            noButton.style.fontSize = `${15 + count}px`
+            yesButton.style.height = `${80 - count * 4}px`;
+            yesButton.style.fontSize = `${24 - count}px`
+            if (count < 2) {
+                noButton.style.display = 'none';
+            }
+        })
+        yesButton.addEventListener('click', () => {
+            dialogQues.style.display = 'none';
+            dialogEnd.style.display = 'block';
+        })
+
+        updateDialog();
+    </script>
+</body>
+
+</html>

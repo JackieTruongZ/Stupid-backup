@@ -1,0 +1,154 @@
+body {
+    width: 100%;
+    height: 100%;
+    background-color: red;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.bg {
+    height: 100%;
+    position: fixed;
+}
+
+
+.dialog-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(241, 235, 131);
+    padding: 20px;
+    border: 5px solid #875415;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    max-width: 80%;
+    text-align: center;
+}
+
+.dialog-title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.dialog-content {
+    margin-bottom: 20px;
+    font-size: 21px;
+}
+
+.dialog-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.dialog-buttons button {
+    margin: 0 5px;
+    background-color: #d5a23d;
+    font-size: 15px;
+    height: 30px;
+    border-radius: 5px;
+}
+
+.dialog-ques {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(241, 235, 131);
+    padding: 20px;
+    border: 5px solid #875415;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+    max-width: 80%;
+    text-align: center;
+}
+
+.dialog-ques .ques {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#yes-btn {
+
+    background-color: #EA4C89;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    height: 40px;
+    line-height: 20px;
+    list-style: none;
+    margin: 0;
+    outline: none;
+    padding: 10px 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+#yes-btn:hover,
+#yes-btn:focus {
+    background-color: #F082AC;
+}
+
+#no-btn {
+    background-color: #22030f;
+    border-radius: 8px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 25px;
+    font-weight: 500;
+    height: 80px;
+    line-height: 20px;
+    list-style: none;
+    margin: 5px;
+    outline: none;
+    padding: 10px 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+
+
+.dialog-end {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(241, 235, 131);
+    padding: 20px;
+    border: 5px solid #875415;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+    max-width: 80%;
+    text-align: center;
+}
+
+.dialog-end p {
+    font-size: 40px;
+}

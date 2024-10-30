@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boy</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="show-on" id="show-on">
+
+        <div class="group-mess" id="group-mess"></div>
+
+    </div>
+    <div class="controll" id="controll">
+        <div class="send-mess" id="send-mess">
+            <input type="text" value="" class="input-mess" id="input-mess" placeholder="nhap tin nhan ">
+            <button class="send-btn" id="send-btn">Send</button>
+        </div>
+        <div class="group-btn" id="group-btn"></div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+    <script>
+
+        const socket = io('http://127.0.0.1:3000');
+
+        const buttons = ['Alo chim sẻ gọi đại bàng đại bàng', 'Đại Bàng có mặt chim sẻ cần gì', 'Cần một cái sting với 2 cốc đá', 'Tài lộc quá lớn'];
+        const container = document.getElementById('group-btn');
+        const messContainer = document.getElementById('group-mess');
+        const sendBtn = document.getElementById('send-btn');
+        const messInput = document.getElementById('input-mess');
+
+        buttons.forEach(button => {
+            const btn = document.createElement('button');
+            btn.textContent = button;
+            btn.addEventListener('click', () => {
+                socket.emit('send-love-02', button);
+            });
+            container.appendChild(btn);
+        });
+        socket.on('receive-love-01', (data) => {
+            // Cập nhật trạng thái game trên giao diện
+            console.log('Received love update:', data);
+
+            const message = document.createElement('p');
+            message.className = "p-receive";
+            message.textContent = data;
+            messContainer.appendChild(message);
+            // Cuộn xuống phần tử
+            messContainer.scrollTop = messContainer.scrollHeight;
+
+
+        });
+
+        socket.on('receive-love-02', (data) => {
+            // Cập nhật trạng thái game trên giao diện
+            console.log('Received love update:', data);
+
+
+            const message = document.createElement('p');
+            message.className = "p-send";
+            message.textContent = data;
+            messContainer.appendChild(message);
+            // Cuộn xuống phần tử
+            messContainer.scrollTop = messContainer.scrollHeight;
+
+        });
+
+        sendBtn.addEventListener('click', () => {
+            if (messInput.value) {
+                socket.emit('send-love-02', messInput.value);
+                messInput.value = '';
+            }
+
+
+        })
+
+    </script>
+</body>
+
+</html>

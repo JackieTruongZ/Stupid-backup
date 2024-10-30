@@ -1,0 +1,24 @@
+Ồ, tôi hiểu vấn đề của bạn rồi. Trong trường hợp này, bạn có thể sử dụng kết hợp của `overflow`, `text-overflow` và `display: -webkit-box` để giới hạn số lượng dòng hiển thị.
+
+Đây là ví dụ code:
+
+```html
+<div style="width: 200px; border: 1px solid black; padding: 10px;">
+  <p style="margin: 0; 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;">
+    Đây là một đoạn văn bản dài sẽ chỉ hiển thị 2 dòng và ẩn phần còn lại.
+  </p>
+</div>
+```
+
+Giải thích:
+
+- `display: -webkit-box;` cho phép sử dụng các thuộc tính `-webkit-line-clamp` và `-webkit-box-orient`.
+- `-webkit-line-clamp: 2;` giới hạn hiển thị tối đa 2 dòng.
+- `-webkit-box-orient: vertical;` buộc nội dung hiển thị theo chiều dọc.
+
+Với cách này, đoạn văn bản sẽ chỉ hiển thị tối đa 2 dòng và ẩn phần còn lại khi co lại kích thước khung. Nội dung sẽ không bị đẩy xuống làm tăng chiều cao của khung.

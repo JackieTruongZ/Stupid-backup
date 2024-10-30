@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trang 2</title>
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PeerConnection.js/0.4.0/PeerConnection.min.js"></script>
+  <script>
+    let peerConnection;
+    let dataChannel;
+
+    function handleOffer(offer) {
+      peerConnection = new RTCPeerConnection();
+
+      peerConnection.ondatachannel = event => {
+        dataChannel = event.channel;
+        dataChannel.onmessage = event => {
+          console.log("Received data:", event.data);
+        };
+      };
+
+      peerConnection.setRemoteDescription(new RTCSessionDescription(offer))
+        .then(() => peerConnection.createAnswer())
+        .then(answer => peerConnection.setLocalDescription(answer))
+        .then(() => {
+          fetch('/answer', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(peerConnection.localDescription)
+          });
+        })
+        .catch(error => console.error(error));
+    }
+  </script>
+</head>
+<body>
+  <h1>Trang 2</h1>
+</body>
+</html>

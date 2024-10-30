@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Game Controller</h1>
+        <button id="upBtn">Up</button>
+        <button id="downBtn">Down</button>
+        <button id="leftBtn">Left</button>
+        <button id="rightBtn">Right</button>
+        <button id="shootBtn">Shoot</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+    <script>
+        const socket = io('http://127.0.0.1:3000');
+
+
+        document.getElementById('downBtn').addEventListener('click', () => {
+          socket.emit('send-love-01', { main: 'red', direction: 'down' });
+        });
+
+        document.getElementById('leftBtn').addEventListener('click', () => {
+          socket.emit('send-love-01', { main: 'red', direction: 'left' });
+        });
+
+        document.getElementById('rightBtn').addEventListener('click', () => {
+          socket.emit('send-love-01', { main: 'red', direction: 'right' });
+        });
+
+        document.getElementById('shootBtn').addEventListener('click', () => {
+          socket.emit('send-love-01', { /* Dữ liệu bắn */ });
+        });
+
+        socket.on('receive-love-01', (data) => {
+            // Cập nhật trạng thái game trên giao diện
+            console.log('Received game update:', data);
+        });
+    </script>
+</body>
+
+</html>

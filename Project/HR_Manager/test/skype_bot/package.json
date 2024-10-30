@@ -1,0 +1,17 @@
+{
+  "name": "skype_bot",
+  "version": "1.0.0",
+  "description": "skype bot to send message",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+
+  },
+  "author": "Jackie Truong",
+  "license": "ISC",
+  "dependencies": {
+    "botbuilder": "^4.22.2",
+    "restify": "^11.1.0"
+  }
+}

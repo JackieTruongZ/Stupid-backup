@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Game Controller</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    button {
+      font-size: 24px;
+      padding: 20px 40px;
+      margin: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Game Controller</h1>
+    <button id="upBtn">Up</button>
+    <button id="downBtn">Down</button>
+    <button id="leftBtn">Left</button>
+    <button id="rightBtn">Right</button>
+    <button id="shootBtn">Shoot</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+  <script>
+    const socket = io('http://127.0.0.1:3000');
+    let intervalIdUp;
+    let intervalIdDown;
+    let intervalIdRight;
+    let intervalIdLeft;
+    const upButton = document.getElementById('upBtn');
+    upButton.addEventListener('mousedown', () => {
+      intervalIdUp = setInterval(() => {
+        socket.emit('player-move', { main: 'red', direction: 'up' });
+      }, 100); // Gửi dữ liệu mỗi giây
+    });
+    upButton.addEventListener('mouseup', () => {
+      // console.log('Stopped sending data to server.');
+
+      clearInterval(intervalIdUp);
+    });
+
+    const downButton = document.getElementById('downBtn');
+    downButton.addEventListener('mousedown', () => {
+      intervalIdDown = setInterval(() => {
+        socket.emit('player-move', { main: 'red', direction: 'down' });
+      }, 100); // Gửi dữ liệu mỗi 0.1 giây
+    });
+    downButton.addEventListener('mouseup', () => {
+      clearInterval(intervalIdDown);
+    });
+
+    const leftButton = document.getElementById('leftBtn');
+    leftButton.addEventListener('mousedown', () => {
+      intervalIdLeft = setInterval(() => {
+        socket.emit('player-move', { main: 'red', direction: 'left' });
+      }, 10); // Gửi dữ liệu mỗi 0.1 giây
+    });
+    leftButton.addEventListener('mouseup', () => {
+      clearInterval(intervalIdLeft);
+    });
+
+    const rightButton = document.getElementById('rightBtn');
+    rightButton.addEventListener('mousedown', () => {
+      intervalIdRight = setInterval(() => {
+        socket.emit('player-move', { main: 'red', direction: 'right' });
+      }, 10); // Gửi dữ liệu mỗi 0.1 giây
+    });
+    rightButton.addEventListener('mouseup', () => {
+      clearInterval(intervalIdRight);
+    });
+
+
+    // document.getElementById('downBtn').addEventListener('click', () => {
+    //   socket.emit('player-move', { main: 'red', direction: 'down' });
+    // });
+
+    // document.getElementById('leftBtn').addEventListener('click', () => {
+    //   socket.emit('player-move', { main: 'red', direction: 'left' });
+    // });
+
+    // document.getElementById('rightBtn').addEventListener('click', () => {
+    //   socket.emit('player-move', { main: 'red', direction: 'right' });
+    // });
+
+    // document.getElementById('shootBtn').addEventListener('click', () => {
+    //   socket.emit('player-shoot', { /* Dữ liệu bắn */ });
+    // });
+
+    socket.on('game-update', (data) => {
+      // Cập nhật trạng thái game trên giao diện
+      console.log('Received game update:', data);
+    });
+  </script>
+</body>
+
+</html>

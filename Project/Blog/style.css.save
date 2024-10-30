@@ -1,0 +1,14 @@
+.page1 {
+    width: 200%;
+    background:red;
+}
+
+.side-img-page1 {
+    width: 50%;
+}
+
+.main-page1 {
+    width: 50%;
+}
+
+

@@ -1,0 +1,11 @@
+{
+  "name": "queryableencryption",
+  "version": "1.0.0",
+  "description": "nodejs with mongodb queryable encryption",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "\"jackie truong\"",
+  "license": "ISC"
+}

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        canvas {
+            border: 1px solid #d3d3d3;
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+
+<body onload="startGame()">
+    <h1>Server Client Receiver</h1>
+    <div id="game-data"></div>
+
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <!-- <script>
+        const socket = io('http://127.0.0.1:3000'); // Thay 'http://server-socket-url:3000' bằng URL của server socket
+
+        socket.on('game-update', (data) => {
+            console.log('Received game update:', data);
+            const gameDataDiv = document.getElementById('game-data');
+            gameDataDiv.textContent = JSON.stringify(data);
+        });
+    </script> -->
+    <script>
+        const socket = io('http://192.168.1.13:3000'); // Thay 'http://server-socket-url:3000' bằng URL của server socket
+        socket.on('game-update', (data) => {
+            // console.log(data);
+
+
+            myGamePieceRed.speedX = 0;
+            myGamePieceRed.speedY = 0;
+            myGamePieceRed.speedY += 1;
+
+
+            myGamePieceBlue.speedX = 0;
+            myGamePieceBlue.speedY = 0;
+            myGamePieceBlue.speedY += 1;
+
+
+            // Kiểm tra va chạm với các brick
+
+            // for (var i = 0; i < bricks.length; i++) {
+            //     if (myGamePiece.y >= bricks[i].y - myGamePiece.height) {
+            //         // Nếu va chạm, đặt lại vị trí y của component chính
+            //         if (myGamePiece.x <= bricks[i].x + bricks[i].width && bricks[i].x <= myGamePiece.x + myGamePiece.width) {
+            //             myGamePiece.speedY = 0;
+            //         }
+            //     }
+
+            // }
+
+            //================================================================================
+
+            // console.log("speed Y : ", myGamePieceRed.speedY);
+
+            var landedRed = false;
+            for (var i = 0; i < bricks.length; i++) {
+                if (myGamePieceRed.crashWith(bricks[i])) {
+                    // Xử lý va chạm
+                    myGamePieceRed.gravity = 0;
+                    // console.log("ops dumpppppp !!!!!");
+                    if (myGamePieceRed.y + myGamePieceRed.height >= bricks[i].y &&
+                        myGamePieceRed.y + myGamePieceRed.height <= bricks[i].y + 5) {
+                        // Khi GamePiece chạm vào mặt dưới của brick
+                        myGamePieceRed.speedY = 0;
+                        myGamePieceRed.y = bricks[i].y - myGamePieceRed.height;
+                        landedRed = true;
+
+                    } else if (myGamePieceRed.y <= bricks[i].y + bricks[i].height &&
+                        myGamePieceRed.y >= bricks[i].y - 5) {
+                        // Khi GamePiece chạm vào mặt trên của brick
+                        myGamePieceRed.speedY = 0;
+                        myGamePieceRed.y = bricks[i].y + bricks[i].height;
+                    } else if (myGamePieceRed.x + myGamePieceRed.width >= bricks[i].x &&
+                        myGamePieceRed.x <= bricks[i].x + bricks[i].width) {
+                        // Khi GamePiece chạm vào mặt bên của brick
+                        if (myGamePieceRed.speedX > 0) {
+                            myGamePieceRed.x = bricks[i].x - myGamePieceRed.width;
+                        } else {
+                            myGamePieceRed.x = bricks[i].x + bricks[i].width;
+                        }
+                        myGamePieceRed.speedX = 0;
+                    }
+                }
+            }
+
+            // Nếu GamePiece không chạm vào mặt dưới của brick, tiếp tục rơi
+            if (!landedRed) {
+                myGamePieceRed.y += myGamePieceRed.gravitySpeed;
+            }
+            let jumpingRed = false;
+            const jumpForceRed = -100; // Lực nhảy ban đầu
+
+            // console.log("speed Y : ", myGamePieceRed.speedY);
+            if (data.main === 'red') {
+                if (data.direction === 'right') {
+                    myGamePieceRed.speedX = 3;
+                }
+                if (data.direction === 'left') {
+                    myGamePieceRed.speedX = -3;
+                }
+                if (data.direction === 'up') {
+
+                    myGamePieceRed.speedY = -20; // Đặt tốc độ ban đầu khi nhảy
+
+                }
+
+            }
+            myGamePieceRed.newPos();
+            myGamePieceRed.update();
+        });
+
+        var myGamePieceRed;
+        var myGamePieceBlue;
+        var bricks = [];
+        const gravity = 0.5;
+
+        function startGame() {
+            myGameArea.start();
+            myGamePieceRed = new component(30, 30, "red", 10, 120);
+            myGamePieceBlue = new component(30, 30, "blue", 600, 120);
+
+            // Tạo các component brick
+
+            // bricks = new component(100, 20, "brown", 10, 200);
+
+            createBricks();
+
+        }
+
+        function createBricks() {
+            // Định nghĩa thông tin về các brick
+            var brickInfo = [
+                { width: 200, height: 20, color: "brown", x: 10, y: 200 },
+                { width: 180, height: 15, color: "green", x: 150, y: 350 },
+                { width: 220, height: 25, color: "blue", x: 300, y: 120 },
+                { width: 190, height: 18, color: "yellow", x: 50, y: 280 },
+                { width: 200, height: 20, color: "brown", x: 550, y: 200 },
+                { width: 180, height: 15, color: "green", x: 800, y: 350 },
+                { width: 220, height: 25, color: "blue", x: 850, y: 120 },
+                { width: 190, height: 18, color: "yellow", x: 500, y: 280 }
+            ];
+
+            // Tạo các brick dựa trên thông tin ở trên
+            for (var i = 0; i < brickInfo.length; i++) {
+                var brick = new component(
+                    brickInfo[i].width,
+                    brickInfo[i].height,
+                    brickInfo[i].color,
+                    brickInfo[i].x,
+                    brickInfo[i].y
+                );
+                bricks.push(brick);
+            }
+        }
+
+
+        var myGameArea = {
+            canvas: document.createElement("canvas"),
+            start: function () {
+                this.canvas.width = 1500;
+                this.canvas.height = 800;
+                this.context = this.canvas.getContext("2d");
+                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+                this.interval = setInterval(updateGameArea, 20);
+                window.addEventListener('keydown', function (e) {
+                    myGameArea.keys = (myGameArea.keys || []);
+                    myGameArea.keys[e.keyCode] = (e.type == "keydown");
+                })
+                window.addEventListener('keyup', function (e) {
+                    myGameArea.keys[e.keyCode] = (e.type == "keydown");
+                })
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            }
+        }
+
+        function component(width, height, color, x, y) {
+            this.gamearea = myGameArea;
+            this.width = width;
+            this.height = height;
+            this.speedX = 0;
+            this.speedY = 0;
+            this.gravitySpeed = 2;
+            this.gravity = 0.5; // Gia tốc do trọng lực
+            this.x = x;
+            this.y = y;
+            this.update = function () {
+                ctx = myGameArea.context;
+                ctx.fillStyle = color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+            this.newPos = function () {
+                this.speedY += this.gravity; // Tăng tốc độ theo trọng lực 
+                if (this.x < 1) {
+                    this.speedX = 5;
+
+                }
+                if (this.x + 30 > 1499) {
+                    this.speedX = -5;
+
+                }
+                if (this.y < 1) {
+                    this.speedY = 5;
+
+                }
+                if (this.y + 30 > 799) {
+                    this.speedY = -5;
+
+                }
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+
+            }
+
+            this.crashWith = (otherObj) => {
+                let myLeft = this.x;
+                let myRight = this.x + (this.width);
+                let myTop = this.y;
+                let myBottom = this.y + (this.height);
+                let otherLeft = otherObj.x;
+                let otherRight = otherObj.x + (otherObj.width);
+                let otherTop = otherObj.y;
+                let otherBottom = otherObj.y + (otherObj.height);
+
+                return !(myLeft > otherRight ||
+                    myRight < otherLeft ||
+                    myTop > otherBottom ||
+                    myBottom < otherTop);
+            }
+        }
+
+        function updateGameArea() {
+            myGameArea.clear();
+
+            myGamePieceRed.speedX = 0;
+            myGamePieceRed.speedY = 0;
+            myGamePieceRed.speedY += 4;
+
+
+            myGamePieceBlue.speedX = 0;
+            myGamePieceBlue.speedY = 0;
+            myGamePieceBlue.speedY += 4;
+
+
+            // Kiểm tra va chạm với các brick
+
+            // for (var i = 0; i < bricks.length; i++) {
+            //     if (myGamePiece.y >= bricks[i].y - myGamePiece.height) {
+            //         // Nếu va chạm, đặt lại vị trí y của component chính
+            //         if (myGamePiece.x <= bricks[i].x + bricks[i].width && bricks[i].x <= myGamePiece.x + myGamePiece.width) {
+            //             myGamePiece.speedY = 0;
+            //         }
+            //     }
+
+            // }
+
+            //================================================================================
+
+            var landedRed = false;
+            for (var i = 0; i < bricks.length; i++) {
+                if (myGamePieceRed.crashWith(bricks[i])) {
+                    // Xử lý va chạm
+                    myGamePieceRed.gravity = 0;
+                    // console.log("ops dumpppppp !!!!!");
+                    if (myGamePieceRed.y + myGamePieceRed.height >= bricks[i].y &&
+                        myGamePieceRed.y + myGamePieceRed.height <= bricks[i].y + 5) {
+                        // Khi GamePiece chạm vào mặt dưới của brick
+                        myGamePieceRed.speedY = 2;
+                        myGamePieceRed.y = bricks[i].y - myGamePieceRed.height;
+                        landedRed = true;
+                    } else if (myGamePieceRed.y <= bricks[i].y + bricks[i].height &&
+                        myGamePieceRed.y >= bricks[i].y - 5) {
+                        // Khi GamePiece chạm vào mặt trên của brick
+                        myGamePieceRed.speedY = 0;
+                        myGamePieceRed.y = bricks[i].y + bricks[i].height;
+                    } else if (myGamePieceRed.x + myGamePieceRed.width >= bricks[i].x &&
+                        myGamePieceRed.x <= bricks[i].x + bricks[i].width) {
+                        // Khi GamePiece chạm vào mặt bên của brick
+                        if (myGamePieceRed.speedX > 0) {
+                            myGamePieceRed.x = bricks[i].x - myGamePieceRed.width;
+                        } else {
+                            myGamePieceRed.x = bricks[i].x + bricks[i].width;
+                        }
+                        myGamePieceRed.speedX = 0;
+                    }
+                }
+            }
+
+            // Nếu GamePiece không chạm vào mặt dưới của brick, tiếp tục rơi
+            if (!landedRed) {
+                myGamePieceRed.y += myGamePieceRed.gravitySpeed;
+            }
+
+
+
+            if (myGameArea.keys && myGameArea.keys[65]) {
+                myGamePieceRed.speedX = -4;
+                console.log("left");
+            }
+            if (myGameArea.keys && myGameArea.keys[68]) {
+                myGamePieceRed.speedX = 4;
+                console.log("right");
+            }
+
+            let jumpingRed = false;
+            const jumpForceRed = -10; // Lực nhảy ban đầu
+
+            if (myGameArea.keys && myGameArea.keys[87]) { // Nhấn phím mũi tên lên
+                if (!jumpingRed && myGamePieceRed.speedY !== 0) {
+                    myGamePieceRed.speedY = jumpForceRed; // Đặt tốc độ ban đầu khi nhảy
+                    jumpingRed = true;
+                    console.log("up");
+                }
+            } else {
+                if (jumpingRed && this.speedY < 0) {
+                    myGamePieceRed.speedY += this.gravity / 2; // Giảm dần tốc độ nhảy
+                }
+                jumpingRed = false;
+            }
+
+
+
+
+            // if (myGameArea.keys && myGameArea.keys[38]) { myGamePiece.speedY = -20; }
+            // if (myGameArea.keys && myGameArea.keys[40]) { myGamePiece.speedY = 2; }
+
+            //================================================================================
+
+
+            //==========================================================================================
+
+            var landedBlue = false;
+            for (var i = 0; i < bricks.length; i++) {
+                if (myGamePieceBlue.crashWith(bricks[i])) {
+                    // Xử lý va chạm
+                    myGamePieceBlue.gravity = 0;
+                    // console.log("ops dumpppppp !!!!!");
+                    if (myGamePieceBlue.y + myGamePieceBlue.height >= bricks[i].y &&
+                        myGamePieceBlue.y + myGamePieceBlue.height <= bricks[i].y + 5) {
+                        // Khi GamePiece chạm vào mặt dưới của brick
+                        myGamePieceBlue.speedY = 2;
+                        myGamePieceBlue.y = bricks[i].y - myGamePieceBlue.height;
+                        landedBlue = true;
+                    } else if (myGamePieceBlue.y <= bricks[i].y + bricks[i].height &&
+                        myGamePieceBlue.y >= bricks[i].y - 5) {
+                        // Khi GamePiece chạm vào mặt trên của brick
+                        myGamePieceBlue.speedY = 0;
+                        myGamePieceBlue.y = bricks[i].y + bricks[i].height;
+                    } else if (myGamePieceBlue.x + myGamePieceBlue.width >= bricks[i].x &&
+                        myGamePieceBlue.x <= bricks[i].x + bricks[i].width) {
+                        // Khi GamePiece chạm vào mặt bên của brick
+                        if (myGamePieceBlue.speedX > 0) {
+                            myGamePieceBlue.x = bricks[i].x - myGamePieceBlue.width;
+                        } else {
+                            myGamePieceBlue.x = bricks[i].x + bricks[i].width;
+                        }
+                        myGamePieceBlue.speedX = 0;
+                    }
+                }
+            }
+
+            // Nếu GamePiece không chạm vào mặt dưới của brick, tiếp tục rơi
+            if (!landedBlue) {
+                myGamePieceBlue.y += myGamePieceBlue.gravitySpeed;
+            }
+
+
+            if (myGameArea.keys && myGameArea.keys[37]) { myGamePieceBlue.speedX = -4; }
+            if (myGameArea.keys && myGameArea.keys[39]) { myGamePieceBlue.speedX = 4; }
+
+            let jumpingBlue = false;
+            const jumpForceBlue = -10; // Lực nhảy ban đầu
+
+            if (myGameArea.keys && myGameArea.keys[38]) { // Nhấn phím mũi tên lên
+                if (!jumpingBlue) {
+                    myGamePieceBlue.speedY = jumpForceBlue; // Đặt tốc độ ban đầu khi nhảy
+                    jumpingBlue = true;
+                }
+            } else {
+                if (jumpingBlue && this.speedY < 0) {
+                    myGamePieceBlue.speedY += this.gravity / 2; // Giảm dần tốc độ nhảy
+                }
+                jumpingBlue = false;
+            }
+            // if (myGameArea.keys && myGameArea.keys[38]) { myGamePiece.speedY = -20; }
+            // if (myGameArea.keys && myGameArea.keys[40]) { myGamePiece.speedY = 2; }
+
+            //====================================================================================================
+
+            myGamePieceRed.newPos();
+            myGamePieceRed.update();
+            myGamePieceBlue.newPos();
+            myGamePieceBlue.update()
+
+            // bricks.newPos();
+            // bricks.update();
+
+            // Cập nhật vị trí của các brick
+            for (var i = 0; i < bricks.length; i++) {
+                bricks[i].update();
+            }
+
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>
